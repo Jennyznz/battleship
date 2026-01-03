@@ -1,3 +1,5 @@
+import { Ship } from "./ships";
+
 class Gameboard {
     constructor() {
 
@@ -22,7 +24,7 @@ class Gameboard {
         const oneD= new Ship(1);
 
         // Store ships
-        const ships = [four,
+        this.ships = [four,
             threeA, threeB,
             twoA, twoB, twoC,
             oneA, oneB, oneC, oneD
@@ -72,11 +74,11 @@ class Gameboard {
 
         // Set ship
         if (direction === 0) {  // Horizontal
-            for (let i = 0; i < this.ship.length; i++) {
+            for (let i = 0; i < ship.length; i++) {
                 this.board[horizontal + i][vertical] = ship;
             }
         } else {       // Vertical ship
-            for (let i = 0; i < this.ship.length; i++) {
+            for (let i = 0; i < ship.length; i++) {
                 this.board[horizontal][vertical + i] = ship;  
             }
         }
@@ -95,7 +97,6 @@ class Gameboard {
             this.board[horizontal][vertical].hit();
             this.isAllSunk();
         }
-
     }
 
     isAllSunk() {
@@ -108,3 +109,5 @@ class Gameboard {
     }
 
 }
+
+export { Gameboard };
