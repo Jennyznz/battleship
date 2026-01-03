@@ -1,5 +1,11 @@
 class Gameboard {
     constructor() {
+
+        // Create a 10x10 Array
+        this.board = Array.from({ length: 10 }, () =>
+            Array.from({ length: 10 }, () => null)
+        );
+
         // Create 1 ship of length 4, 
         // 2 ships of length 3, 
         // 3 ships of length 2, 
@@ -8,11 +14,97 @@ class Gameboard {
         const threeA = new Ship(3);
         const threeB = new Ship(3);
         const twoA = new Ship(2);
-        const twoB = new Ship(2)
-        const twoC = new Ship(2)
+        const twoB = new Ship(2);
+        const twoC = new Ship(2);
         const oneA = new Ship(1);
         const oneB= new Ship(1);
         const oneC = new Ship(1);
         const oneD= new Ship(1);
+
+        // Store ships
+        const ships = [four,
+            threeA, threeB,
+            twoA, twoB, twoC,
+            oneA, oneB, oneC, oneD
+        ];
+
+        // Randomly set board positions
+        this.setBoard(ships);
     }
+
+    setShip(ship) {
+        let set = false;
+        let horizontal = 0;
+        let vertical = 0;
+        let direction = 0;
+
+        // Discover a valid placement for the ship
+        while (set === false) {
+            // Generate a random coordinate and direction
+            horizontal = Math.floor(Math.random() * 10);
+            vertical = Math.floor(Math.random() * 10);
+            direction = Math.floor(Math.random() * 2);
+            
+            if (this.board[horizontal][vertical] === null) {
+                let conflict = false;
+                // Horizontal ship
+                if (direction === 0) {
+                    for (let i = 0; i < ship.length; i++) {
+                        if (this.board[horizontal + i][vertical] !== null) {
+                            conflict = true;
+                            break;
+                        }
+                    }
+                // Direction === 1: vertical ship
+                } else {
+                    for (let i = 0; i < ship.length; i++) {
+                        if (this.board[horizontal][vertical + i] !== null) {
+                            conflict = true;
+                            break;
+                        }
+                    }
+                }
+                // Move onto next while iteration if the current coordinates and direction are not valid 
+                if (conflict) continue; 
+                else set = true;
+            }
+        }
+
+        // Set ship
+        if (direction === 0) {  // Horizontal
+            for (let i = 0; i < this.ship.length; i++) {
+                this.board[horizontal + i][vertical] = ship;
+            }
+        } else {       // Vertical ship
+            for (let i = 0; i < this.ship.length; i++) {
+                this.board[horizontal][vertical + i] = ship;  
+            }
+        }
+    } 
+
+    setBoard(ships) {
+        for (const ship of ships) {
+            this.setShip(ship);
+        }
+    }
+
+    recieveAttack(horizontal, vertical) {
+        if (this.board[horizontal][vertical] === null) {
+            this.board[horizontal][vertical] = 0; // missed attack
+        } else {
+            this.board[horizontal][vertical].hit();
+            this.isAllSunk();
+        }
+
+    }
+
+    isAllSunk() {
+        for (const ship of this.ships) {
+            if (!ship.isSunk()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
