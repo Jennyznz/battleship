@@ -31,34 +31,47 @@ class Gameboard {
         ];
 
         // Randomly set board positions
-        this.setBoard(ships);
+        this.setBoard();
     }
 
     setShip(ship) {
-        let set = false;
+        let found = false;
         let horizontal = 0;
         let vertical = 0;
         let direction = 0;
 
-        // Discover a valid placement for the ship
-        while (set === false) {
+        // Find a random and valid placement for the ship
+        while (found === false) {
+
             // Generate a random coordinate and direction
             horizontal = Math.floor(Math.random() * 10);
             vertical = Math.floor(Math.random() * 10);
             direction = Math.floor(Math.random() * 2);
-            
-            if (this.board[horizontal][vertical] === null) {
-                let conflict = false;
-                // Horizontal ship
-                if (direction === 0) {
+
+            let conflict = false;
+
+            // Horizontal
+            if (direction === 0) { 
+                // Check if the horizontal ship would go off the board
+                if (horizontal + ship.length > 10) {
+                        conflict = true;
+                } else {
+                    // Check if every spot going right is empty
                     for (let i = 0; i < ship.length; i++) {
                         if (this.board[horizontal + i][vertical] !== null) {
                             conflict = true;
                             break;
                         }
                     }
-                // Direction === 1: vertical ship
+                }
+
+            // Vertical
+            } else {
+                // Check if the horizontal ship would go off the board
+                if (vertical + ship.length > 10) {
+                        conflict = true;
                 } else {
+                    // Check if every spot going down is empty
                     for (let i = 0; i < ship.length; i++) {
                         if (this.board[horizontal][vertical + i] !== null) {
                             conflict = true;
@@ -66,14 +79,15 @@ class Gameboard {
                         }
                     }
                 }
-                // Move onto next while iteration if the current coordinates and direction are not valid 
-                if (conflict) continue; 
-                else set = true;
             }
+
+            // Move onto next while iteration if the current coordinates and direction are not valid 
+            if (conflict) continue; 
+            else found = true;
         }
 
         // Set ship
-        if (direction === 0) {  // Horizontal
+        if (direction === 0) {  // Horizontal ship
             for (let i = 0; i < ship.length; i++) {
                 this.board[horizontal + i][vertical] = ship;
             }
@@ -84,8 +98,8 @@ class Gameboard {
         }
     } 
 
-    setBoard(ships) {
-        for (const ship of ships) {
+    setBoard() {
+        for (const ship of this.ships) {
             this.setShip(ship);
         }
     }
@@ -95,6 +109,10 @@ class Gameboard {
             this.board[horizontal][vertical] = 0; // missed attack
         } else {
             this.board[horizontal][vertical].hit();
+            const ship = this.board[horizontal][vertical];
+            // if (ship.isSunk()) {
+
+            // }
             this.isAllSunk();
         }
     }
@@ -107,7 +125,6 @@ class Gameboard {
         }
         return true;
     }
-
 }
 
 export { Gameboard };
