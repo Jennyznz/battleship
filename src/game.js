@@ -6,30 +6,43 @@ class Game {
         this.playerTwo = new Player("computer");
 
         this.currentPlayer = this.playerOne;
-        this.gameOver = false;
+        this.playerOneTurn = false;
+    }
+
+    attachEventListeners() {
+        const realGrid = document.querySelector('.grid-one');
+        const realCells = realGrid.querySelectorAll('.cell');
+
+        realCells.forEach(cell => {
+            if (this.playerOneTurn) {
+                this.playerTwo.gb.receiveAttack(1, 1); // Add data points to the grid cells
+
+                if (!gameOver()) {
+                    this.computerMove();
+                }
+            }
+        });
     }
 
     start() {
-        this.takeTurn();
+        this.playerOneTurn = true;
     }
 
-    takeTurn() {
-        if (this.gameOver) return;
+    // Find a random non-missed spot on "real" gameboard
+    computerMove() {
+        this.playerOneTurn = false;
+        // Get random coordinates
 
-        if (this.currentPlayer.type === "computer") {
-            while (this.playerOne.gb)
-            const horizontal = getRand();
-            const vertical = getRand();
+        this.playerOne.receiveAttack(1, 1);
 
-            this.playerOne.gb.recieveAttack(horizontal, vertical);
+        if (!gameOver()) {
+            this.playerOneTurn = true;
         }
     }
 
-    getRand() {
-
+    gameOver() {
+        return this.playerOne.gb.isAllSunk() || this.playerTwo.gb.isAllSunk();
     }
-
-
 
 }
 
