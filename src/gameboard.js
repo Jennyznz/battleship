@@ -3,7 +3,7 @@ import { Ship } from "./ships";
 class Gameboard {
     constructor() {
 
-        // Create a 10x10 Array
+        // Create a 10x10 Array containing null
         this.board = Array.from({ length: 10 }, () =>
             Array.from({ length: 10 }, () => null)
         );
@@ -104,12 +104,13 @@ class Gameboard {
         }
     }
 
-    recieveAttack(horizontal, vertical) {
+    receiveAttack(horizontal, vertical) {
         if (this.board[horizontal][vertical] === null) {
             this.board[horizontal][vertical] = 0; // missed attack
         } else {
             this.board[horizontal][vertical].hit();
             const ship = this.board[horizontal][vertical];
+            this.board[horizontal][vertical] = 1;   // hit ship
             // if (ship.isSunk()) {
 
             // }
