@@ -23,7 +23,8 @@ describe('Game Logic', () => {
     test('playerOneMove: check for a hit or a miss on playerTwo gameboard', () => {
         game.playerOneMove(4, 4);
         game.gameOver = true; // Avoid triggering computerMove()
-        expect(game.playerTwo.gb.board[4][4]).toBe(0 || 1);
+        const cell = game.playerTwo.gb.board[4][4];
+        expect(cell == 0 || cell == 1).toBe(true);
     });
 
     test('computerMove: check for functional random coordinate generation', () => {
@@ -39,5 +40,24 @@ describe('Game Logic', () => {
         expect(receiveAttackSpy).toHaveBeenCalledWith(2, 3);
     });
 
+    test('Game is not over when there are unsunk ships on either board', () => {
+        expect(game.gameOver()).toBe(false);
+    });
+
+    test('Game is over when all ships are sunk on both boards', () => {
+        for (ship of game.playerOne.gb.ships) {
+            for (let i = 0; i < ship.length; i++) {
+                ship.hit();
+            }
+        }
+
+        for (ship of game.playerTwo.gb.ships) {
+            for (let i = 0; i < ship.length; i++) {
+                ship.hit();
+            }
+        }
+
+        expect(game.gameOver()).toBe(true);
+    });
 
 });
