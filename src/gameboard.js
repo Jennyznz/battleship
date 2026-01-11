@@ -2,10 +2,12 @@ import { Ship } from "./ships";
 
 class Gameboard {
     constructor() {
+
         // Create a 10x10 Array containing null
         this.board = Array.from({ length: 10 }, () =>
             Array.from({ length: 10 }, () => null)
         );
+
         // Create 1 ship of length 4, 
         // 2 ships of length 3, 
         // 3 ships of length 2, 
@@ -20,12 +22,14 @@ class Gameboard {
         const oneB= new Ship(1);
         const oneC = new Ship(1);
         const oneD= new Ship(1);
+
         // Store ships
         this.ships = [four,
             threeA, threeB,
             twoA, twoB, twoC,
             oneA, oneB, oneC, oneD
         ];
+
         // Randomly set board positions
         this.setBoard();
     }
@@ -101,6 +105,12 @@ class Gameboard {
     }
 
     receiveAttack(horizontal, vertical) {
+        // Board values:
+            // 0: missed attack
+            // 1: hit
+            // ship object: untouched with ship
+            // null: untouched without ship
+
         if (this.board[horizontal][vertical] === null) {
             this.board[horizontal][vertical] = 0; // missed attack
         } else {

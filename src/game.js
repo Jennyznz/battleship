@@ -19,7 +19,6 @@ class Game {
         }
     }
 
-
     // Find a random non-missed spot on "real" gameboard
     computerMove() {
         this.playerOneTurn = false;
@@ -37,7 +36,7 @@ class Game {
             }
         }
 
-        this.playerOne.receiveAttack(x, y);
+        this.playerOne.gb.receiveAttack(x, y);
 
         if (!this.gameOver()) {
             this.playerOneTurn = true;
