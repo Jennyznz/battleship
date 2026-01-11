@@ -1,10 +1,9 @@
 .main-container {
-    height: 500px;
-    width: 800px;
+    height: 100vh;
+    width: 100vw;
     display: grid;
     grid-template-rows: 1fr 4fr 1fr;
     gap: 10px;
-    background-color: red;
 }
 
 .main-content {
@@ -12,7 +11,15 @@
     grid-auto-flow: column;
     grid-template-columns: 1fr 1fr;
     gap: 50px;
+    background-color: blue;
 }
+
+.gameboard-one, .gameboard-two {
+    display: grid;
+    grid-template-rows: 5fr 1fr;
+    gap: 10px;
+}
+
 
 .grid-one, .grid-two {
     display: grid;
@@ -25,4 +32,9 @@
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     gap: 2px;
+    background-color: aquamarine;
+}
+
+.cell {
+    background-color: green;
 }
