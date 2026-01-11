@@ -2,12 +2,10 @@ import { Ship } from "./ships";
 
 class Gameboard {
     constructor() {
-
         // Create a 10x10 Array containing null
         this.board = Array.from({ length: 10 }, () =>
             Array.from({ length: 10 }, () => null)
         );
-
         // Create 1 ship of length 4, 
         // 2 ships of length 3, 
         // 3 ships of length 2, 
@@ -22,14 +20,12 @@ class Gameboard {
         const oneB= new Ship(1);
         const oneC = new Ship(1);
         const oneD= new Ship(1);
-
         // Store ships
         this.ships = [four,
             threeA, threeB,
             twoA, twoB, twoC,
             oneA, oneB, oneC, oneD
         ];
-
         // Randomly set board positions
         this.setBoard();
     }

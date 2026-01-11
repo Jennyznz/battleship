@@ -6,38 +6,19 @@ class Game {
         this.playerTwo = new Player("computer");
 
         this.currentPlayer = this.playerOne;
-        this.playerOneTurn = false;
-    }
-
-    attachEventListeners() {
-        const realGrid = document.querySelector('.grid-one');
-        const realRows = realGrid.querySelectorAll('.row');
-        realRows.forEach(row, r => {
-            // Add coordinate points to each cell in the grid
-            const cells = row.querySelectorAll('.cell');
-            cells.forEach(cell, c => {
-                cell.dataset.row = r;
-                cell.dataset.column = c;
-            });
-        });
-
-        realCells.forEach(cell => {
-            cell.attachEventListeners('click', () => {
-                if (this.playerOneTurn) {
-                    this.playerTwo.gb.receiveAttack(cell.dataset.row, cell.dataset.column); 
-
-                    if (!gameOver()) {
-                        this.computerMove();
-                    }
-                }
-            });
-            
-        });
-    }
-
-    start() {
         this.playerOneTurn = true;
     }
+
+    playerOneMove(row, column) {
+        if (this.playerOneTurn) {
+            this.playerTwo.gb.receiveAttack(row, column); 
+
+            if (!this.gameOver()) {
+                this.computerMove();
+            }
+        }
+    }
+
 
     // Find a random non-missed spot on "real" gameboard
     computerMove() {
@@ -58,7 +39,7 @@ class Game {
 
         this.playerOne.receiveAttack(x, y);
 
-        if (!gameOver()) {
+        if (!this.gameOver()) {
             this.playerOneTurn = true;
         }
     }
