@@ -4,8 +4,6 @@ import './styles.css';
 const game = new Game();
 UISetup(game);
 
-
-
 function UISetup(game) {
     const gridOne = document.querySelector('.grid-one');
     const gridOneRows = gridOne.querySelectorAll('.row');

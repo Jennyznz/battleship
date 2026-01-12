@@ -111,12 +111,14 @@ class Gameboard {
             // ship object: untouched with ship
             // null: untouched without ship
 
-        if (this.board[horizontal][vertical] === null) {
+        const cell = this.board[horizontal][vertical];
+
+        if (cell === null) {
             this.board[horizontal][vertical] = 0; // missed attack
-        } else {
-            this.board[horizontal][vertical].hit();
-            const ship = this.board[horizontal][vertical];
+        } else if (cell instanceof Ship) {
             this.board[horizontal][vertical] = 1;   // hit ship
+            cell.hit();
+            console.log("ship hit")
             // if (ship.isSunk()) {
 
             // }
