@@ -25,8 +25,8 @@ function addCoordinates(grid) {
 }
 
 function addEventListeners(gridOne, gridTwo, game) {
-    const gridOneCells = gridOne.querySelectorAll('.cell');
-    gridOneCells.forEach(cell => {
+    const gridTwoCells = gridTwo.querySelectorAll('.cell');
+    gridTwoCells.forEach(cell => {
         cell.addEventListener('click', () => {
             const row = Number(cell.dataset.row);
             const column = Number(cell.dataset.column);
@@ -36,7 +36,7 @@ function addEventListeners(gridOne, gridTwo, game) {
 
             if (!game.gameOver()) {
                 const move = game.computerMove();
-                const cell = gridTwo.querySelector(`.cell[data-row="${move.x}"][data-column="${move.y}"]`);
+                const cell = gridOne.querySelector(`.cell[data-row="${move.x}"][data-column="${move.y}"]`);
                 updateCell(cell, game.playerOne.gb);
             }
 
@@ -58,6 +58,10 @@ function updateCell(cell, gb) {
     } else if (currentVal == 0) {
         cell.classList.add('miss');
     }
+
+}
+
+function gameOver() {
 
 }
 
