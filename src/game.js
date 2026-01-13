@@ -12,6 +12,7 @@ class Game {
 
     playerOneMove(row, column) {
         if (this.playerOneTurn) {
+            
             this.playerTwo.gb.receiveAttack(row, column); 
         }
         
@@ -45,7 +46,6 @@ class Game {
         this.playerOne.gb.receiveAttack(x, y);
 
         const result = this.gameOver();
-
         if (result) { // Game over
             displayGameOver(result === 'player' ? 'You' : 'Your Opponent');
             return;

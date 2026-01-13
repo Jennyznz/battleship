@@ -28,30 +28,29 @@ function addEventListeners(gridOne, gridTwo, game) {
     const gridTwoCells = gridTwo.querySelectorAll('.cell');
     gridTwoCells.forEach(cell => {
         cell.addEventListener('click', () => {
-            if (game.gameOver()) return;
-
             const row = Number(cell.dataset.row);
             const column = Number(cell.dataset.column);
 
-            game.playerOneMove(row, column);
-            updateCell(cell, game.playerTwo.gb);
+            if (!(game.playerTwo.gb.board[row][column] == 0) && !(game.playerTwo.gb.board[row][column] == 1)) {
+                if (game.gameOver()) return;
+                
+                game.playerOneMove(row, column);
+                updateCell(cell, game.playerTwo.gb);
+                if (game.gameOver()) return;    // Check if the game is over
 
-            if (game.gameOver()) return;
-
-            setTimeout(() => {
-                if (!game.gameOver()) {
-                    const move = game.computerMove();
-                    const cell = gridOne.querySelector(`.cell[data-row="${move.x}"][data-column="${move.y}"]`);
-                    updateCell(cell, game.playerOne.gb);
-
-                }
-            }, 500);
+                setTimeout(() => {
+                    if (!game.gameOver()) {
+                        const move = game.computerMove();
+                        const cell = gridOne.querySelector(`.cell[data-row="${move.x}"][data-column="${move.y}"]`);
+                        updateCell(cell, game.playerOne.gb);
+                    }
+                }, 500);
+            }
         });
     });
 }
 
 function updateCell(cell, gb) {
-
     const row = cell.dataset.row;
     const col = cell.dataset.column;
     const currentVal = gb.board[row][col];
