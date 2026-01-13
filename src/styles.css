@@ -37,3 +37,11 @@
 .cell {
     background-color: green;
 }
+
+.cell.hit {
+    background-color: red;
+}
+
+.cell.miss {
+    background-color: grey;
+}

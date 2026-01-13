@@ -118,7 +118,6 @@ class Gameboard {
         } else if (cell instanceof Ship) {
             this.board[horizontal][vertical] = 1;   // hit ship
             cell.hit();
-            console.log("ship hit")
             // if (ship.isSunk()) {
 
             // }

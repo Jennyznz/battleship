@@ -1,4 +1,5 @@
 import { Player } from "./player"
+import { updateGrid } from "./ui";
 
 class Game {
     constructor() {
@@ -13,9 +14,9 @@ class Game {
         if (this.playerOneTurn) {
             this.playerTwo.gb.receiveAttack(row, column); 
 
-            if (!this.gameOver()) {
-                this.computerMove();
-            }
+            // if (!this.gameOver()) {
+            //     this.computerMove();
+            // }
         }
     }
 
@@ -41,6 +42,8 @@ class Game {
         if (!this.gameOver()) {
             this.playerOneTurn = true;
         }
+
+        return { x, y };
     }
 
     gameOver() {
