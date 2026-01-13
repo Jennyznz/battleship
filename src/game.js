@@ -1,4 +1,5 @@
 import { Player } from "./player"
+import { displayGameOver, updateInstructions } from "./ui.js"
 
 class Game {
     constructor() {
@@ -13,11 +14,20 @@ class Game {
         if (this.playerOneTurn) {
             this.playerTwo.gb.receiveAttack(row, column); 
         }
+        
+        const result = this.gameOver();
+        if (result) {
+            displayGameOver(result === 'player' ? 'You' : 'Your Opponent');
+            return;
+        } 
+
+        this.playerOneTurn = false;
+        updateInstructions("Your Opponent's");
+
     }
 
     // Find a random non-missed spot on "real" gameboard
     computerMove() {
-        this.playerOneTurn = false;
 
         // Get random non-missed coordinates
         let x = 0;
@@ -34,15 +44,27 @@ class Game {
 
         this.playerOne.gb.receiveAttack(x, y);
 
-        if (!this.gameOver()) {
-            this.playerOneTurn = true;
-        }
+        const result = this.gameOver();
+
+        if (result) { // Game over
+            displayGameOver(result === 'player' ? 'You' : 'Your Opponent');
+            return;
+        } 
+
+        this.playerOneTurn = true;
+        updateInstructions("Your");
 
         return { x, y };
     }
 
     gameOver() {
-        return this.playerOne.gb.isAllSunk() || this.playerTwo.gb.isAllSunk();
+        const playerAllSunk = this.playerTwo.gb.isAllSunk();
+        const computerAllSunk = this.playerOne.gb.isAllSunk();
+        console.log("Game over check:", { playerAllSunk, computerAllSunk });
+
+        if (playerAllSunk) return "player";
+        if (computerAllSunk) return "computer";
+        return null;
     }
 
 }

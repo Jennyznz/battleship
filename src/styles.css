@@ -5,6 +5,10 @@
     gap: 10px;
 }
 
+.instructions {
+    color: red;
+    background-color: blue;
+}
 .main-content {
     display: grid;
     grid-auto-flow: column;
@@ -31,7 +35,6 @@
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     gap: 2px;
-    background-color: aquamarine;
 }
 
 .cell {

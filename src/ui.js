@@ -28,18 +28,24 @@ function addEventListeners(gridOne, gridTwo, game) {
     const gridTwoCells = gridTwo.querySelectorAll('.cell');
     gridTwoCells.forEach(cell => {
         cell.addEventListener('click', () => {
+            if (game.gameOver()) return;
+
             const row = Number(cell.dataset.row);
             const column = Number(cell.dataset.column);
 
             game.playerOneMove(row, column);
             updateCell(cell, game.playerTwo.gb);
 
-            if (!game.gameOver()) {
-                const move = game.computerMove();
-                const cell = gridOne.querySelector(`.cell[data-row="${move.x}"][data-column="${move.y}"]`);
-                updateCell(cell, game.playerOne.gb);
-            }
+            if (game.gameOver()) return;
 
+            setTimeout(() => {
+                if (!game.gameOver()) {
+                    const move = game.computerMove();
+                    const cell = gridOne.querySelector(`.cell[data-row="${move.x}"][data-column="${move.y}"]`);
+                    updateCell(cell, game.playerOne.gb);
+
+                }
+            }, 500);
         });
     });
 }
@@ -61,9 +67,15 @@ function updateCell(cell, gb) {
 
 }
 
-function gameOver() {
-
+function displayGameOver(who) {
+    const instructions = document.querySelector('.instructions');
+    instructions.textContent = `Game Over. ${who} wins!`;
+    console.log('hey!');
 }
 
-
-export { UISetup, updateCell }
+function updateInstructions(who) {
+    const instructions = document.querySelector('.instructions');
+    instructions.textContent = `It's ${who} Turn`;
+}
+ 
+export { UISetup, updateCell, displayGameOver, updateInstructions }
