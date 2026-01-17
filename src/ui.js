@@ -26,11 +26,15 @@ function addCoordinates(grid) {
 
 function addEventListeners(gridOne, gridTwo, game) {
     const gridTwoCells = gridTwo.querySelectorAll('.cell');
+
     gridTwoCells.forEach(cell => {
+
         cell.addEventListener('click', () => {
+
             const row = Number(cell.dataset.row);
             const column = Number(cell.dataset.column);
 
+            // Ignore clicks on grid cells that have already been clicked
             if (!(game.playerTwo.gb.board[row][column] == 0) && !(game.playerTwo.gb.board[row][column] == 1)) {
                 if (game.gameOver()) return;
                 

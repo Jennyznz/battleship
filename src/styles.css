@@ -5,10 +5,6 @@
     gap: 10px;
 }
 
-.instructions {
-    color: red;
-    background-color: blue;
-}
 .main-content {
     display: grid;
     grid-auto-flow: column;

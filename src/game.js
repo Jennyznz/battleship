@@ -12,24 +12,19 @@ class Game {
 
     playerOneMove(row, column) {
         if (this.playerOneTurn) {
-            
             this.playerTwo.gb.receiveAttack(row, column); 
         }
-        
         const result = this.gameOver();
         if (result) {
             displayGameOver(result === 'player' ? 'You' : 'Your Opponent');
             return;
         } 
-
         this.playerOneTurn = false;
         updateInstructions("Your Opponent's");
-
     }
 
     // Find a random non-missed spot on "real" gameboard
     computerMove() {
-
         // Get random non-missed coordinates
         let x = 0;
         let y = 0;

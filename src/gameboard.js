@@ -2,7 +2,6 @@ import { Ship } from "./ships";
 
 class Gameboard {
     constructor() {
-
         // Create a 10x10 Array containing null
         this.board = Array.from({ length: 10 }, () =>
             Array.from({ length: 10 }, () => null)
@@ -42,18 +41,16 @@ class Gameboard {
 
         // Find a random and valid placement for the ship
         while (found === false) {
-
             // Generate a random coordinate and direction
             horizontal = Math.floor(Math.random() * 10);
             vertical = Math.floor(Math.random() * 10);
             direction = Math.floor(Math.random() * 2);
 
             let conflict = false;
-
             // Horizontal
             if (direction === 0) { 
                 // Check if the horizontal ship would go off the board
-                if (horizontal + ship.length > 10) {
+                if (horizontal + ship.length - 1 > 10) {
                         conflict = true;
                 } else {
                     // Check if every spot going right is empty
@@ -64,11 +61,11 @@ class Gameboard {
                         }
                     }
                 }
-
+                
             // Vertical
             } else {
-                // Check if the horizontal ship would go off the board
-                if (vertical + ship.length > 10) {
+                // Check if the vertical ship would go off the board
+                if (vertical + ship.length - 1 > 10) {
                         conflict = true;
                 } else {
                     // Check if every spot going down is empty
@@ -80,7 +77,6 @@ class Gameboard {
                     }
                 }
             }
-
             // Move onto next while iteration if the current coordinates and direction are not valid 
             if (conflict) continue; 
             else found = true;
@@ -96,7 +92,78 @@ class Gameboard {
                 this.board[horizontal][vertical + i] = ship;  
             }
         }
+
+        setShipBorders(horizontal, vertical, direction, ship.length);
     } 
+
+    setShipBorders(x, y, direction, length) {   // Corners are created with the top and bottom borders
+        // Horizontal ship
+        if (direction === 0) {
+            // Left border
+            if (x - 1 > 0) {
+                this.board[x - 1][y] = 2;
+            }  
+            // Top border
+            if (y + 1 < 10) {
+                if (x - 1 > 0) {
+                    this.board[x - 1][y + 1] = 2;
+                }
+                for (let i = 0; i <= length; i++) {
+                    if (x + i < 10) {
+                        this.board[x + i][y + 1] = 2;
+                    }
+                }
+            }
+            // Right border
+            if ((x + length) < 10) {
+                this.board[x + length][y] = 2;
+            }
+            // Bottom border
+            if (y - 1 > 0) {
+                if (x - 1 > 0){
+                    this.board[x - 1][y - 1] = 2;
+                }
+                for (let i = 0; i <= length; i++) {
+                    if (x + i < 10) {
+                        this.board[x + i][y - 1] = 2;
+                    }
+                }
+            }
+        }
+        // Vertical ship
+        else if (direction === 1) {
+            // Left border
+            if (x - 1 > 0) {
+                if (y - 1 > 0) {
+                    this.board[x - 1][y - 1] = 2;
+                }
+                for (let i = 0; i <= length; i++) {
+                    if (y + i < 10) {
+                        this.board[x - 1][y + i] = 2;
+                    }
+                }
+            }
+            // Top border
+            if (y + length < 10) {
+                this.board[x][y + length] = 2;
+            }
+            // Right border
+            if (x + 1 < 10) {
+                if (y - 1 > 0) {
+                    this.board[x + 1][y - 1] = 2;
+                }
+                for (let i = 0; i <= length; i++) {
+                    if (y + 1 < 10) {
+                        this.board[x + 1][y + i] = 2;
+                    }
+                }
+            }
+            // Bottom border
+            if (y - 1 > 0) {
+                this.board[x][y - 1]= 2;
+            }
+        }
+    }
 
     setBoard() {
         for (const ship of this.ships) {
@@ -106,10 +173,11 @@ class Gameboard {
 
     receiveAttack(horizontal, vertical) {
         // Board values:
-            // 0: missed attack
+            // 0: missed attack, or ship border
             // 1: hit
             // ship object: untouched with ship
             // null: untouched without ship
+            // 2: untouched ship border 
 
         const cell = this.board[horizontal][vertical];
 
@@ -118,9 +186,13 @@ class Gameboard {
         } else if (cell instanceof Ship) {
             this.board[horizontal][vertical] = 1;   // hit ship
             cell.hit();
-            // if (ship.isSunk()) {
+            // Set all surrounding blocks to 0 if ship is sunk
+            if (ship.isSunk()) {
+                
 
-            // }
+            } else {    // Else just set the surrounding blocks of the current cell
+
+            }
             this.isAllSunk();
         }
     }
