@@ -14,19 +14,19 @@ class Gameboard {
         const four = new Ship(4);
         const threeA = new Ship(3);
         const threeB = new Ship(3);
-        // const twoA = new Ship(2);
-        // const twoB = new Ship(2);
-        // const twoC = new Ship(2);
-        // const oneA = new Ship(1);
-        // const oneB = new Ship(1);
-        // const oneC = new Ship(1);
-        // const oneD = new Ship(1);
+        const twoA = new Ship(2);
+        const twoB = new Ship(2);
+        const twoC = new Ship(2);
+        const oneA = new Ship(1);
+        const oneB = new Ship(1);
+        const oneC = new Ship(1);
+        const oneD = new Ship(1);
 
         // Store ships
         this.ships = [four,
             threeA, threeB,
-            // twoA, twoB, twoC,
-            // oneA, oneB, oneC, oneD
+            twoA, twoB, twoC,
+            oneA, oneB, oneC, oneD
         ];
 
         // Randomly set board positions

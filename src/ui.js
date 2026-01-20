@@ -78,9 +78,9 @@ function updateCell(cell, gb) {
 
 }
 
-function displayGameOver(who) {
+function displayGameOver(what) {
     const instructions = document.querySelector('.instructions');
-    instructions.textContent = `Game Over. Winner: ${who}`;
+    instructions.textContent = `Game Over. You ${what}!`;
     console.log('hey!');
 }
 
