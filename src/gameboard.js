@@ -18,9 +18,9 @@ class Gameboard {
         const twoB = new Ship(2);
         const twoC = new Ship(2);
         const oneA = new Ship(1);
-        const oneB= new Ship(1);
+        const oneB = new Ship(1);
         const oneC = new Ship(1);
-        const oneD= new Ship(1);
+        const oneD = new Ship(1);
 
         // Store ships
         this.ships = [four,
@@ -35,42 +35,43 @@ class Gameboard {
 
     setShip(ship) {
         let found = false;
-        let horizontal = 0;
-        let vertical = 0;
+        let x = 0;
+        let y = 0;
         let direction = 0;
 
         // Find a random and valid placement for the ship
         while (found === false) {
             // Generate a random coordinate and direction
-            horizontal = Math.floor(Math.random() * 10);
-            vertical = Math.floor(Math.random() * 10);
+            x = Math.floor(Math.random() * 10);
+            y = Math.floor(Math.random() * 10);
             direction = Math.floor(Math.random() * 2);
 
             let conflict = false;
+            
             // Horizontal
             if (direction === 0) { 
                 // Check if the horizontal ship would go off the board
-                if (horizontal + ship.length - 1 > 10) {
+                if (x + ship.length - 1 >= 10) {
                         conflict = true;
                 } else {
                     // Check if every spot going right is empty
                     for (let i = 0; i < ship.length; i++) {
-                        if (this.board[horizontal + i][vertical] !== null) {
+                        if (this.board[y][x + i] !== null) {
                             conflict = true;
                             break;
                         }
                     }
                 }
-                
+
             // Vertical
             } else {
                 // Check if the vertical ship would go off the board
-                if (vertical + ship.length - 1 > 10) {
+                if (y + ship.length - 1 >= 10) {
                         conflict = true;
                 } else {
                     // Check if every spot going down is empty
                     for (let i = 0; i < ship.length; i++) {
-                        if (this.board[horizontal][vertical + i] !== null) {
+                        if (this.board[y + i][x] !== null) {
                             conflict = true;
                             break;
                         }
@@ -82,85 +83,111 @@ class Gameboard {
             else found = true;
         }
 
+        // Set ship direction
+        ship.dir = direction;
         // Set ship
         if (direction === 0) {  // Horizontal ship
             for (let i = 0; i < ship.length; i++) {
-                this.board[horizontal + i][vertical] = ship;
+                this.board[y][x + i] = ship;
             }
-        } else {       // Vertical ship
+        } else {    // Vertical ship
             for (let i = 0; i < ship.length; i++) {
-                this.board[horizontal][vertical + i] = ship;  
+                this.board[y + i][x] = ship;  
             }
         }
 
-        setShipBorders(horizontal, vertical, direction, ship.length);
+       this.setShipBorders(y, x, ship);
     } 
 
-    setShipBorders(x, y, direction, length) {   // Corners are created with the top and bottom borders
+    setShipBorders(y, x, ship) {   // Encase ship with borders
         // Horizontal ship
-        if (direction === 0) {
+        if (ship.dir === 0) {
             // Left border
-            if (x - 1 > 0) {
-                this.board[x - 1][y] = 2;
+            if (x - 1 >= 0) {
+                if (!(this.board[y][x - 1] instanceof Ship)) {
+                    this.board[y][x - 1] = 2;
+                }
             }  
             // Top border
-            if (y + 1 < 10) {
-                if (x - 1 > 0) {
-                    this.board[x - 1][y + 1] = 2;
+            if (y - 1 >= 0) {
+                if (x - 1 >= 0) {
+                    if (!(this.board[y - 1][x - 1] instanceof Ship)) {
+                        this.board[y - 1][x - 1] = 2;
+                    }
                 }
-                for (let i = 0; i <= length; i++) {
+                for (let i = 0; i <= ship.length; i++) {
                     if (x + i < 10) {
-                        this.board[x + i][y + 1] = 2;
+                        if (!(this.board[y - 1][x + i] instanceof Ship)) {
+                            this.board[y - 1][x + i] = 2;
+                        }
                     }
                 }
             }
             // Right border
-            if ((x + length) < 10) {
-                this.board[x + length][y] = 2;
+            if ((x + ship.length) < 10) {
+                if (!(this.board[y][x + ship.length] instanceof Ship)) {
+                    this.board[y][x + ship.length] = 2;
+                }
             }
             // Bottom border
-            if (y - 1 > 0) {
-                if (x - 1 > 0){
-                    this.board[x - 1][y - 1] = 2;
+            if (y + 1 < 10) {
+                if (x - 1 >= 0){
+                    if (!(this.board[y + 1][x - 1] instanceof Ship)) {
+                        this.board[y + 1][x - 1] = 2;
+                    }
                 }
-                for (let i = 0; i <= length; i++) {
+                for (let i = 0; i <= ship.length; i++) {
                     if (x + i < 10) {
-                        this.board[x + i][y - 1] = 2;
+                        if (!(this.board[y + 1][x + i] instanceof Ship)) {
+                            this.board[y + 1][x + i] = 2;
+                        }
                     }
                 }
             }
         }
         // Vertical ship
-        else if (direction === 1) {
+        else if (ship.dir === 1) {
             // Left border
-            if (x - 1 > 0) {
-                if (y - 1 > 0) {
-                    this.board[x - 1][y - 1] = 2;
+            if (x - 1 >= 0) {
+                if (y - 1 >= 0) {
+                    if (!(this.board[y - 1][x - 1] instanceof Ship)) {
+                        this.board[y - 1][x - 1] = 2;
+                    }
                 }
-                for (let i = 0; i <= length; i++) {
+                for (let i = 0; i <= ship.length; i++) {
                     if (y + i < 10) {
-                        this.board[x - 1][y + i] = 2;
+                        if (!(this.board[y + i][x - 1] instanceof Ship)) {
+                            this.board[y + i][x - 1] = 2;
+                        }
                     }
                 }
             }
             // Top border
-            if (y + length < 10) {
-                this.board[x][y + length] = 2;
+            if (y - 1 >= 0) {
+                if (!(this.board[y - 1][x] instanceof Ship)) {
+                    this.board[y - 1][x] = 2;
+                }
             }
             // Right border
             if (x + 1 < 10) {
-                if (y - 1 > 0) {
-                    this.board[x + 1][y - 1] = 2;
+                if (y - 1 >= 0) {
+                    if (!(this.board[y - 1][x + 1] instanceof Ship)) {
+                        this.board[y - 1][x + 1] = 2;
+                    }
                 }
-                for (let i = 0; i <= length; i++) {
-                    if (y + 1 < 10) {
-                        this.board[x + 1][y + i] = 2;
+                for (let i = 0; i <= ship.length; i++) {
+                    if (y + i < 10) {
+                        if (!(this.board[y + i][x + 1] instanceof Ship)) {
+                            this.board[y + i][x + 1] = 2;
+                        }
                     }
                 }
             }
             // Bottom border
-            if (y - 1 > 0) {
-                this.board[x][y - 1]= 2;
+            if (y + ship.length < 10) {
+                if (!(this.board[y][x + ship.length] instanceof Ship)) {
+                    this.board[y][x + ship.length]= 2;
+                }
             }
         }
     }
@@ -171,7 +198,7 @@ class Gameboard {
         }
     }
 
-    receiveAttack(horizontal, vertical) {
+    receiveAttack(vertical, horizontal) {
         // Board values:
             // 0: missed attack, or ship border
             // 1: hit
@@ -179,22 +206,165 @@ class Gameboard {
             // null: untouched without ship
             // 2: untouched ship border 
 
-        const cell = this.board[horizontal][vertical];
+        const cell = this.board[vertical][horizontal];
+        if (cell === 0 || cell === 1) return []; // Ignore clicks on an already missed or hit cell
 
-        if (cell === null) {
-            this.board[horizontal][vertical] = 0; // missed attack
-        } else if (cell instanceof Ship) {
-            this.board[horizontal][vertical] = 1;   // hit ship
+        if (cell === null || cell === 2) { 
+            this.board[vertical][horizontal] = 0; // missed attack on either null or ship border
+            return [{y: vertical, x: horizontal}];
+        } else if (cell instanceof Ship) { // successful attack
+            this.board[vertical][horizontal] = 1;   // hit ship
             cell.hit();
             // Set all surrounding blocks to 0 if ship is sunk
-            if (ship.isSunk()) {
-                
-
-            } else {    // Else just set the surrounding blocks of the current cell
-
+            if (cell.isSunk()) {
+                return this.getBorderCells(vertical, horizontal, cell);
+            } else {    // Else just set the corner blocks of the current cell
+                return this.getCornerCells(vertical, horizontal);
             }
-            this.isAllSunk();
         }
+    }
+
+    getCornerCells(y, x) {
+        const cells = [{y: y, x: x}];
+
+        // Left
+        if (x - 1 >= 0) { 
+            // Top left corner
+            if (y - 1 >= 0) {
+                this.board[y - 1][x - 1] = 0;
+                cells.push({y: y - 1, x: x - 1});
+            }
+            // Bottom left corner
+            if (y + 1 < 10) {
+                this.board[y + 1][x - 1] = 0;
+                cells.push({y: y + 1, x: x - 1});
+            }
+        }
+        // Right
+        if (x + 1 < 10) {
+            // Top right corner
+            if (y - 1 >= 0) {
+                this.board[y - 1][x + 1] = 0;
+                cells.push({y: y - 1, x: x + 1});
+            }
+            // Bottom right corner
+            if (y + 1 < 10) {
+                this.board[y + 1][x + 1] = 0;
+                cells.push({y: y + 1, x: x + 1});
+            }
+        }
+
+        return cells;
+    }
+
+    getBorderCells(y, x, ship) {
+        const cells = [{y: y, x: x}];
+
+        // Horizontal ship
+        if (ship.dir === 0) {
+            // Left border
+            if (x - 1 >= 0) {
+                if (!(this.board[y][x - 1] instanceof Ship)) {
+                    this.board[y][x - 1] = 0;
+                    cells.push({y: y, x: x - 1});
+                }
+                
+            }  
+            // Top border
+            if (y - 1 >= 0) {
+                if (x - 1 >= 0) {
+                    if (!(this.board[y - 1][x - 1] instanceof Ship)){
+                        this.board[y - 1][x - 1] = 0;
+                        cells.push({y: y - 1, x: x - 1});
+                    }
+                }
+                for (let i = 0; i <= ship.length; i++) {
+                    if (x + i < 10) {
+                        if (!(this.board[y - 1][x + i] instanceof Ship)){
+                            this.board[y - 1][x + i] = 0;
+                            cells.push({y: y - 1, x: x + i});
+                        }
+                    }
+                }
+            }
+            // Right border
+            if ((x + ship.length) < 10) {
+                if (!(this.board[y][x + ship.length] instanceof Ship)){
+                    this.board[y][x + ship.length] = 0;
+                    cells.push({y: y, x: x + ship.length});
+                }
+            }
+            // Bottom border
+            if (y + 1 < 10) {
+                if (x - 1 >= 0){
+                    if (!(this.board[y + 1][x - 1] instanceof Ship)){
+                        this.board[y + 1][x - 1] = 0;
+                        cells.push({y: y + 1, x: x - 1});
+                    }
+                }
+                for (let i = 0; i <= ship.length; i++) {
+                    if (x + i < 10) {
+                        if (!(this.board[y + 1][x + i] instanceof Ship)){
+                            this.board[y + 1][x + i] = 0;
+                            cells.push({y: y + 1, x: x + i});
+                        }
+                    }
+                }
+            }
+        }
+        // Vertical ship
+        else if (ship.dir === 1) {
+            // Left border
+            if (x - 1 >= 0) {
+                if (y - 1 >= 0) {
+                    if (!(this.board[y - 1][x - 1] instanceof Ship)){
+                        this.board[y - 1][x - 1] = 0;
+                        cells.push({y: y - 1, x: x - 1});
+                    }
+                }
+                for (let i = 0; i <= ship.length; i++) {
+                    if (y + i < 10) {
+                        if (!(this.board[y + i][x - 1] instanceof Ship)){
+                            this.board[y + i][x - 1] = 0;
+                            cells.push({y: y + i, x: x - 1});
+                        }
+                    }
+                }
+            }
+            // Top border
+            if (y - 1 >= 0) {
+                if (!(this.board[y - 1][x] instanceof Ship)){
+                    this.board[y - 1][x] = 0;
+                    cells.push({y: y - 1, x: x});
+                }
+            }
+            // Right border
+            if (x + 1 < 10) {
+                if (y - 1 >= 0) {
+                    if (!(this.board[y - 1][x + 1] instanceof Ship)){
+                        this.board[y - 1][x + 1] = 0;
+                        cells.push({y: y - 1, x: x + 1});
+                    }
+                }
+                for (let i = 0; i <= ship.length; i++) {
+                    if (y + i < 10) {
+                        if (!(this.board[y + i][x + 1] instanceof Ship)){
+                            this.board[y + i][x + 1] = 0;
+                            cells.push({y: y + i, x: x + 1});
+                        }
+                    }
+                }
+            }
+            // Bottom border
+            if (y + ship.length < 10) {
+                if (!(this.board[y + ship.length][x] instanceof Ship)){
+                    this.board[y + ship.length][x] = 0;
+                    cells.push({y: y + ship.length, x: x});
+                }
+            }
+        }
+
+        return cells;
     }
 
     isAllSunk() {

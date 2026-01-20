@@ -11,16 +11,18 @@ class Game {
     }
 
     playerOneMove(row, column) {
-        if (this.playerOneTurn) {
-            this.playerTwo.gb.receiveAttack(row, column); 
-        }
+        if (!this.playerOneTurn) return [];
+
+        const impactedCells = this.playerTwo.gb.receiveAttack(row, column); 
+
         const result = this.gameOver();
         if (result) {
             displayGameOver(result === 'player' ? 'You' : 'Your Opponent');
-            return;
+            return impactedCells;
         } 
         this.playerOneTurn = false;
         updateInstructions("Your Opponent's");
+        return impactedCells;
     }
 
     // Find a random non-missed spot on "real" gameboard
@@ -33,29 +35,29 @@ class Game {
         while (!found) {
             x = Math.floor(Math.random() * 10);
             y = Math.floor(Math.random() * 10);
-            if (!(this.playerOne.gb.board[x][y] == 0) && !(this.playerOne.gb.board[x][y] == 1)) {   // there hasn't been a missed or successful attack on the spot
+            if (!(this.playerOne.gb.board[y][x] == 0) && !(this.playerOne.gb.board[y][x] == 1)) {   // there hasn't been a missed or successful attack on the spot
                 found = true;
             }
         }
 
-        this.playerOne.gb.receiveAttack(x, y);
+        const impactedCells = this.playerOne.gb.receiveAttack(y, x);
 
         const result = this.gameOver();
         if (result) { // Game over
             displayGameOver(result === 'player' ? 'You' : 'Your Opponent');
-            return;
+            return impactedCells;
         } 
 
         this.playerOneTurn = true;
         updateInstructions("Your");
 
-        return { x, y };
+        return impactedCells;
     }
 
     gameOver() {
         const playerAllSunk = this.playerTwo.gb.isAllSunk();
         const computerAllSunk = this.playerOne.gb.isAllSunk();
-        console.log("Game over check:", { playerAllSunk, computerAllSunk });
+        //console.log("Game over check:", { playerAllSunk, computerAllSunk });
 
         if (playerAllSunk) return "player";
         if (computerAllSunk) return "computer";

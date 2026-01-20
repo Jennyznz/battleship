@@ -28,9 +28,7 @@ function addEventListeners(gridOne, gridTwo, game) {
     const gridTwoCells = gridTwo.querySelectorAll('.cell');
 
     gridTwoCells.forEach(cell => {
-
         cell.addEventListener('click', () => {
-
             const row = Number(cell.dataset.row);
             const column = Number(cell.dataset.column);
 
@@ -38,15 +36,22 @@ function addEventListeners(gridOne, gridTwo, game) {
             if (!(game.playerTwo.gb.board[row][column] == 0) && !(game.playerTwo.gb.board[row][column] == 1)) {
                 if (game.gameOver()) return;
                 
-                game.playerOneMove(row, column);
-                updateCell(cell, game.playerTwo.gb);
+                const impactedCells = game.playerOneMove(row, column);
+                impactedCells.forEach(c => {
+                    // Map gameboard cell onto DOM cell
+                    const cell = gridTwo.querySelector(`.cell[data-row="${c.y}"][data-column="${c.x}"]`); 
+                    // Update DOM cell
+                    updateCell(cell, game.playerTwo.gb);
+                });
                 if (game.gameOver()) return;    // Check if the game is over
 
                 setTimeout(() => {
                     if (!game.gameOver()) {
-                        const move = game.computerMove();
-                        const cell = gridOne.querySelector(`.cell[data-row="${move.x}"][data-column="${move.y}"]`);
-                        updateCell(cell, game.playerOne.gb);
+                        const impactedCells = game.computerMove();
+                        impactedCells.forEach(c => {
+                            const cell = gridOne.querySelector(`.cell[data-row="${c.y}"][data-column="${c.x}"]`);
+                            updateCell(cell, game.playerOne.gb);
+                        });
                     }
                 }, 500);
             }
@@ -54,7 +59,14 @@ function addEventListeners(gridOne, gridTwo, game) {
     });
 }
 
+function isAttackable(cellValue) {
+    return cellValue !== 0 && cellValue !== 1;
+}
+
+// Update display of grid cell
 function updateCell(cell, gb) {
+    if (!cell) return;
+
     const row = cell.dataset.row;
     const col = cell.dataset.column;
     const currentVal = gb.board[row][col];
