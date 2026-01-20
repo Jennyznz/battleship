@@ -223,7 +223,8 @@ class Gameboard {
             // Set all surrounding blocks to 0 if ship is sunk
             if (cell.isSunk()) {
                 return this.getBorderCells(vertical, horizontal, cell);
-            } else {    // Else just set the corner blocks of the current cell
+            } else {    
+                // Just set the corner blocks of the current cell
                 return this.getCornerCells(vertical, horizontal);
             }
         }
@@ -239,7 +240,7 @@ class Gameboard {
         if (ship.dir === 0) {
             // Left border
             if (x - 1 >= 0) {
-                if ((this.board[y][x - 1] === null)) {
+                if (this.board[y][x - 1] === 2) {
                     this.board[y][x - 1] = 0;
                     cells.push({y: y, x: x - 1});
                 }
@@ -248,14 +249,14 @@ class Gameboard {
             // Top border
             if (y - 1 >= 0) {
                 if (x - 1 >= 0) {
-                    if ((this.board[y - 1][x - 1] === null)){
+                    if ((this.board[y - 1][x - 1] === 2)){
                         this.board[y - 1][x - 1] = 0;
                         cells.push({y: y - 1, x: x - 1});
                     }
                 }
                 for (let i = 0; i <= ship.length; i++) {
                     if (x + i < 10) {
-                        if ((this.board[y - 1][x + i] === null)){
+                        if ((this.board[y - 1][x + i] === 2)){
                             this.board[y - 1][x + i] = 0;
                             cells.push({y: y - 1, x: x + i});
                         }
@@ -264,7 +265,7 @@ class Gameboard {
             }
             // Right border
             if ((x + ship.length) < 10) {
-                if ((this.board[y][x + ship.length] === null)){
+                if ((this.board[y][x + ship.length] === 2)){
                     this.board[y][x + ship.length] = 0;
                     cells.push({y: y, x: x + ship.length});
                 }
@@ -272,14 +273,14 @@ class Gameboard {
             // Bottom border
             if (y + 1 < 10) {
                 if (x - 1 >= 0){
-                    if ((this.board[y + 1][x - 1] === null)){
+                    if ((this.board[y + 1][x - 1] === 2)){
                         this.board[y + 1][x - 1] = 0;
                         cells.push({y: y + 1, x: x - 1});
                     }
                 }
                 for (let i = 0; i <= ship.length; i++) {
                     if (x + i < 10) {
-                        if ((this.board[y + 1][x + i] === null)){
+                        if ((this.board[y + 1][x + i] === 2)){
                             this.board[y + 1][x + i] = 0;
                             cells.push({y: y + 1, x: x + i});
                         }
@@ -292,14 +293,14 @@ class Gameboard {
             // Left border
             if (x - 1 >= 0) {
                 if (y - 1 >= 0) {
-                    if ((this.board[y - 1][x - 1] === null)){
+                    if ((this.board[y - 1][x - 1] === 2)){
                         this.board[y - 1][x - 1] = 0;
                         cells.push({y: y - 1, x: x - 1});
                     }
                 }
                 for (let i = 0; i <= ship.length; i++) {
                     if (y + i < 10) {
-                        if ((this.board[y + i][x - 1] === null)){
+                        if ((this.board[y + i][x - 1] === 2)){
                             this.board[y + i][x - 1] = 0;
                             cells.push({y: y + i, x: x - 1});
                         }
@@ -308,7 +309,7 @@ class Gameboard {
             }
             // Top border
             if (y - 1 >= 0) {
-                if ((this.board[y - 1][x] === null)){
+                if ((this.board[y - 1][x] === 2)){
                     this.board[y - 1][x] = 0;
                     cells.push({y: y - 1, x: x});
                 }
@@ -316,14 +317,14 @@ class Gameboard {
             // Right border
             if (x + 1 < 10) {
                 if (y - 1 >= 0) {
-                    if ((this.board[y - 1][x + 1] === null)){
+                    if ((this.board[y - 1][x + 1] === 2)){
                         this.board[y - 1][x + 1] = 0;
                         cells.push({y: y - 1, x: x + 1});
                     }
                 }
                 for (let i = 0; i <= ship.length; i++) {
                     if (y + i < 10) {
-                        if ((this.board[y + i][x + 1] === null)){
+                        if ((this.board[y + i][x + 1] === 2)){
                             this.board[y + i][x + 1] = 0;
                             cells.push({y: y + i, x: x + 1});
                         }
@@ -332,7 +333,7 @@ class Gameboard {
             }
             // Bottom border
             if (y + ship.length < 10) {
-                if ((this.board[y + ship.length][x] === null)){
+                if ((this.board[y + ship.length][x] === 2)){
                     this.board[y + ship.length][x] = 0;
                     cells.push({y: y + ship.length, x: x});
                 }

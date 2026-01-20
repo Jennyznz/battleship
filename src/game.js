@@ -17,7 +17,7 @@ class Game {
 
         const result = this.gameOver();
         if (result) {
-            displayGameOver(result === 'player' ? 'You' : 'Your Opponent');
+            displayGameOver(result === 'player' ? 'Won' : 'Lost');
             return impactedCells;
         } 
         this.playerOneTurn = false;
