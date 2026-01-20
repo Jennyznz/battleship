@@ -59,10 +59,6 @@ function addEventListeners(gridOne, gridTwo, game) {
     });
 }
 
-function isAttackable(cellValue) {
-    return cellValue !== 0 && cellValue !== 1;
-}
-
 // Update display of grid cell
 function updateCell(cell, gb) {
     if (!cell) return;
@@ -84,7 +80,7 @@ function updateCell(cell, gb) {
 
 function displayGameOver(who) {
     const instructions = document.querySelector('.instructions');
-    instructions.textContent = `Game Over. ${who} wins!`;
+    instructions.textContent = `Game Over. Winner: ${who}`;
     console.log('hey!');
 }
 
