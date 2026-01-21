@@ -11,8 +11,6 @@ class Game {
     }
 
     playerOneMove(row, column) {
-        //if (!this.playerOneTurn) return [];
-
         const attack = this.playerTwo.gb.receiveAttack(row, column); 
 
         const result = this.gameOver();
@@ -57,8 +55,7 @@ class Game {
     gameOver() {
         const playerAllSunk = this.playerTwo.gb.isAllSunk();
         const computerAllSunk = this.playerOne.gb.isAllSunk();
-        //console.log("Game over check:", { playerAllSunk, computerAllSunk });
-
+        
         if (playerAllSunk) return "player";
         if (computerAllSunk) return "computer";
         return null;
