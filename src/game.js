@@ -11,18 +11,18 @@ class Game {
     }
 
     playerOneMove(row, column) {
-        if (!this.playerOneTurn) return [];
+        //if (!this.playerOneTurn) return [];
 
-        const impactedCells = this.playerTwo.gb.receiveAttack(row, column); 
+        const attack = this.playerTwo.gb.receiveAttack(row, column); 
 
         const result = this.gameOver();
         if (result) {
             displayGameOver(result === 'player' ? 'Won' : 'Lost');
-            return impactedCells;
+            return attack;
         } 
         this.playerOneTurn = false;
         updateInstructions("Your Opponent's");
-        return impactedCells;
+        return attack;
     }
 
     // Find a random non-missed spot on "real" gameboard
@@ -40,18 +40,18 @@ class Game {
             }
         }
 
-        const impactedCells = this.playerOne.gb.receiveAttack(y, x);
+        const attack = this.playerOne.gb.receiveAttack(y, x);
 
         const result = this.gameOver();
         if (result) { // Game over
             displayGameOver(result === 'player' ? 'Won' : 'Lost');
-            return impactedCells;
+            return attack;
         } 
 
         this.playerOneTurn = true;
         updateInstructions("Your");
 
-        return impactedCells;
+        return attack;
     }
 
     gameOver() {

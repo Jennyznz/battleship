@@ -216,16 +216,16 @@ class Gameboard {
         if (cell === 0 || cell === 1) return []; // Ignore clicks on an already missed or hit cell
         if (!(cell instanceof Ship)) { 
             this.board[vertical][horizontal] = 0; // missed attack on either null or ship border
-            return [{y: vertical, x: horizontal}];
+            return { wasHit: 0, impactedCells: [{y: vertical, x: horizontal}]};
         } else if (cell instanceof Ship) { // successful attack
             this.board[vertical][horizontal] = 1;   // hit ship
             cell.hit();
             // Set all surrounding blocks to 0 if ship is sunk
             if (cell.isSunk()) {
-                return this.getBorderCells(vertical, horizontal, cell);
+                return { wasHit: 1, impactedCells: this.getBorderCells(vertical, horizontal, cell)};
             } else {    
                 // Just set the corner blocks of the current cell
-                return this.getCornerCells(vertical, horizontal);
+                return { wasHit: 1, impactedCells: this.getCornerCells(vertical, horizontal)};
             }
         }
     }

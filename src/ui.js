@@ -36,8 +36,8 @@ function addEventListeners(gridOne, gridTwo, game) {
             if (!(game.playerTwo.gb.board[row][column] == 0) && !(game.playerTwo.gb.board[row][column] == 1)) {
                 if (game.gameOver()) return;
                 
-                const impactedCells = game.playerOneMove(row, column);
-                impactedCells.forEach(c => {
+                const playerResults = game.playerOneMove(row, column);
+                playerResults.impactedCells.forEach(c => {
                     // Map gameboard cell onto DOM cell
                     const cell = gridTwo.querySelector(`.cell[data-row="${c.y}"][data-column="${c.x}"]`); 
                     // Update DOM cell
@@ -45,18 +45,27 @@ function addEventListeners(gridOne, gridTwo, game) {
                 });
                 if (game.gameOver()) return;    // Check if the game is over
 
-                setTimeout(() => {
-                    if (!game.gameOver()) {
-                        const impactedCells = game.computerMove();
-                        impactedCells.forEach(c => {
-                            const cell = gridOne.querySelector(`.cell[data-row="${c.y}"][data-column="${c.x}"]`);
-                            updateCell(cell, game.playerOne.gb);
-                        });
-                    }
-                }, 500);
+                if (!playerResults.wasHit && !game.gameOver()) {
+                    setTimeout(() => {
+                        computerTurn(game, gridOne);
+                    }, 500);
+                }
             }
         });
     });
+}
+
+function computerTurn(game, grid) {
+    const compResults = game.computerMove(); 
+
+    compResults.impactedCells.forEach(c => {
+        const cell = grid.querySelector(`.cell[data-row="${c.y}"][data-column="${c.x}"]`);
+        updateCell(cell, game.playerOne.gb);
+    });
+
+    if (compResults.wasHit && !game.gameOver()) {
+        setTimeout(() => computerTurn(game, grid), 500);
+    }
 }
 
 // Update display of grid cell
